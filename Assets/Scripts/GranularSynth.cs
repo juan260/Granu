@@ -19,15 +19,17 @@ class GranularNote
     int samplesPlayed = 0;
     public bool done = false;
     int offset;
+    List<GranularNote> grainList;
     
     
-    public GranularNote(int StartSample, int FadeIn, int FadeOut, int GrainSize, float [] Samples, int Offset){
+    public GranularNote(int StartSample, int FadeIn, int FadeOut, int GrainSize, float [] Samples, int Offset, List<GranularNote> GrainList){
         startSample = StartSample;
         fadeIn = FadeIn;
         fadeOut = FadeOut;
         grainSize = GrainSize;
         samples = Samples;
         offset = Offset;
+        grainList = GrainList;
     }
 
     public void play(float [] data, int channels, float gain){
@@ -40,6 +42,7 @@ class GranularNote
                         if (head + startSample >= samples.Length || samplesPlayed >= grainSize || head + startSample + channels >= samples.Length) 
                         {
                             done = true;
+                            grainList.Remove(this);
                             break;
                         }
                         if(samplesPlayed < fadeIn){
@@ -168,17 +171,19 @@ public class GranularSynth : MonoBehaviour
         if(elapsedTime>1.0/grainFreq){
             
             // Clean the grain list
-            for(int i = 0; i < grainList.Count;){
-                if(grainList[i].done) grainList.RemoveAt(i);
-                else i++;
+          /*  int i = 0;
+            foreach(GranularNote grain in grainList.ToList()){
+                if(grain.done) grainList.RemoveAt(i);
+                i++;
             }
-            
-            if(grainList.Count<maxGrains)
+            */
+            if(grainList.Count<maxGrains){
                 // Add grain to the list
-                debugText = ((int)elapsedTime * samplesPerSecond).ToString();
-                grainList.Add(new GranularNote(samplePosition, fadeIn, fadeOut, grainSize, samples, (int)elapsedTime * samplesPerSecond)); 
+                //debugText = ((int)elapsedTime * samplesPerSecond).ToString();
+                grainList.Add(new GranularNote(samplePosition, fadeIn, fadeOut, grainSize, samples, (int)elapsedTime * samplesPerSecond, grainList)); 
                 //UnityEngine.Debug.Log(grainSize);
                 //UnityEngine.Debug.Log(relativePositionRightHand.x);
+            }
             elapsedTime=0;
         }else{
             elapsedTime += Time.deltaTime;
@@ -194,8 +199,8 @@ public class GranularSynth : MonoBehaviour
                     data[i] = 0;
                 }
             }
-            foreach(GranularNote note in grainList){
-                note.play(data, channels, gain*(1-distance));
+            foreach(GranularNote note in new List<GranularNote>(grainList)){
+                if(!note.done) note.play(data, channels, gain*(1-distance));
             }
             
             averageTimeBetweenAudioFrames = averageTimeBetweenAudioFrames * (1-averageTimeBetweenAudioFramesSmoothingFactor) +
