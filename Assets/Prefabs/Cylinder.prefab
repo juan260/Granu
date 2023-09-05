@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 4432221388000826156}
   - component: {fileID: 6981984383958328845}
   - component: {fileID: 190171268319335504}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 1, z: 0.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -103,7 +103,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -127,14 +127,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gain: 0.5
   hand: {fileID: 0}
-  grainSizeMin: 600
-  grainSizeMax: 9000
+  grainSizeMin: 480
+  grainSizeMax: 4800
   fadeIn: 4000
   fadeOut: 4000
   minGrainFreq: 0.14
   maxGrainFreq: 864
-  maxGrains: 200
-  maxDistance: 6.92
+  maxGrains: 100
+  maxDistance: 0.5
   lengthEndLineFade: 0.2
   debugDisplay: {fileID: 0}
   averageTimeBetweenAudioFramesSmoothingFactor: 0.01
@@ -154,14 +154,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gain: 0.5
   hand: {fileID: 0}
-  grainSizeMin: 1000
-  grainSizeMax: 90000
-  fadeIn: 480
-  fadeOut: 480
+  grainSizeMin: 480
+  grainSizeMax: 4800
+  fadeIn: 200
+  fadeOut: 200
   minGrainFreq: 2
   maxGrainFreq: 100
-  maxGrains: 5
-  maxDistance: 5
+  maxGrains: 100
+  maxDistance: 0.5
   lengthEndLineFade: 0.2
   debugDisplay: {fileID: 0}
   averageTimeBetweenAudioFramesSmoothingFactor: 0.01
@@ -177,7 +177,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 0b6ffcd222756451d9a17d267c3c0e10, type: 3}
+  m_audioClip: {fileID: 8300000, guid: cee75f7fa190047ccaeb27c7ec445a89, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
@@ -286,7 +286,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb2f907c1ddec41f08039dcc45d86cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 20
+  resolution: 40
   barPrefab: {fileID: 2363851675468778395, guid: 224e250dc7e1642f6a20a5cdc66f4084, type: 3}
 --- !u!114 &190171268319335504
 MonoBehaviour:
