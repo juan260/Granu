@@ -106,6 +106,7 @@ public class GranularSynth : MonoBehaviour
     public float averageTimeBetweenAudioFrames = 0.02f;
     float elapsedTime;
     int samplesPerSecond = 48000;
+    float currentTime = 0f;
 
     public bool deletePreviousAudioData = true;
     
@@ -118,7 +119,7 @@ public class GranularSynth : MonoBehaviour
         samples = new float[audioSource.clip.samples * audioSource.clip.channels];
         audioSource.clip.GetData(samples, 0);
         audioSource.Pause();
-        lastAudioFrameTime = Time.time;
+        lastAudioFrameTime = 0f;
     }
     void UpdateForHand(Transform hand){
 
@@ -176,15 +177,15 @@ public class GranularSynth : MonoBehaviour
                 // Add grain to the list
                 debugText = ((int)elapsedTime * samplesPerSecond).ToString();
                 grainList.Add(new GranularNote(samplePosition, fadeIn, fadeOut, grainSize, samples, (int)elapsedTime * samplesPerSecond)); 
-                UnityEngine.Debug.Log(grainSize);
-                UnityEngine.Debug.Log(relativePositionRightHand.x);
+                //UnityEngine.Debug.Log(grainSize);
+                //UnityEngine.Debug.Log(relativePositionRightHand.x);
             elapsedTime=0;
         }else{
             elapsedTime += Time.deltaTime;
         }
         //if(debugDisplay)
-        debugDisplay.text=debugText;
-        
+        //debugDisplay.text=debugText;
+        currentTime = Time.time;
     }
 
     void OnAudioFilterRead(float [] data, int channels){
@@ -198,9 +199,9 @@ public class GranularSynth : MonoBehaviour
             }
             
             averageTimeBetweenAudioFrames = averageTimeBetweenAudioFrames * (1-averageTimeBetweenAudioFramesSmoothingFactor) +
-                 (Time.time - lastAudioFrameTime) * averageTimeBetweenAudioFramesSmoothingFactor;
+                 (currentTime - lastAudioFrameTime) * averageTimeBetweenAudioFramesSmoothingFactor;
             
-            lastAudioFrameTime = Time.time;
+            lastAudioFrameTime = currentTime;
 
     }   
 

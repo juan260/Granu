@@ -15,6 +15,7 @@ public class LineFromAudio : MonoBehaviour {
 
 
     void Start(){
+        audioSource = GetComponent<AudioSource>();
         var points = new Vector3[resolution];
         var widths = new float[resolution];
         samples = new float[audioSource.clip.samples * audioSource.clip.channels];
