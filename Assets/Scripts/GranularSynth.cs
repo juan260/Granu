@@ -124,8 +124,9 @@ public class GranularSynth : MonoBehaviour
         audioSource.Pause();
         lastAudioFrameTime = 0f;
     }
-    void UpdateForHand(Transform hand){
-
+   
+    public void setGain(float gain){
+        this.gain = gain;
     }
     // Update is called once per frame
     void Update()
@@ -152,6 +153,7 @@ public class GranularSynth : MonoBehaviour
             // Distance between 0 and 1 (minimum and maximum)
             distance = Mathf.Sqrt(Mathf.Pow(relativePositionRightHand.x,2f)+Mathf.Pow(relativePositionRightHand.z,2f))/maxDistance;
             distance = Mathf.Clamp(distance, 0f, 1f);
+
             
             if(basePosition > 1f-lengthEndLineFade){
                 distance = Mathf.Max(distance, 1f-((1f-basePosition)/lengthEndLineFade));
