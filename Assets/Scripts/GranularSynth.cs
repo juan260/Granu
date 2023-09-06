@@ -11,8 +11,7 @@ class GranularNote
 {
     int startSample;
     int head = 0;
-    int fadeIn;
-    int fadeOut;
+    int fade;
     int grainSize;
     float[] samples;
     float internalGain = 0f;
@@ -22,10 +21,9 @@ class GranularNote
     List<GranularNote> grainList;
     
     
-    public GranularNote(int StartSample, int FadeIn, int FadeOut, int GrainSize, float [] Samples, int Offset, List<GranularNote> GrainList){
+    public GranularNote(int StartSample, int Fade, int GrainSize, float [] Samples, int Offset, List<GranularNote> GrainList){
         startSample = StartSample;
-        fadeIn = FadeIn;
-        fadeOut = FadeOut;
+        fade = Fade;
         grainSize = GrainSize;
         samples = Samples;
         offset = Offset;
@@ -45,16 +43,16 @@ class GranularNote
                             grainList.Remove(this);
                             break;
                         }
-                        if(samplesPlayed < fadeIn){
-                            internalGain = ((float)samplesPlayed)/fadeIn;
+                        if(samplesPlayed < fade){
+                            internalGain = ((float)samplesPlayed)/fade;
                         } else { internalGain=1.0f; }
                         
-                        if(samplesPlayed > grainSize-fadeOut){
-                            internalGain = ((float)grainSize-samplesPlayed)/fadeOut;
+                        if(samplesPlayed > grainSize-fade){
+                            internalGain = ((float)grainSize-samplesPlayed)/fade;
                         }
                         // TODO Test  this:
-                        if(startSample + samplesPlayed > samples.Length-fadeOut){
-                            internalGain = ((float)samples.Length-(startSample+samplesPlayed))/fadeOut;
+                        if(startSample + samplesPlayed > samples.Length-fade){
+                            internalGain = ((float)samples.Length-(startSample+samplesPlayed))/fade;
                         }
 
                         data[i] += samples[head+startSample]* internalGain * gain;
@@ -77,15 +75,13 @@ public class GranularSynth : MonoBehaviour
     float[] samples;
     public float gain = 1.0f;
     public Transform hand;
-    [Range(480,4800)]
+    [Range(1,4800)]
     public int grainSizeMin = 1000;
     [Range(4800,96000)]
     public int grainSizeMax = 90000;
     int grainSize;
     [Range(1,48000)]
-    public int fadeIn = 480;
-    [Range(1,48000)]
-    public int fadeOut = 480;
+    public int fade = 480;
     [Range(0.01f,10f)]
     public float minGrainFreq = 2;
     [Range(10f,1000f)]
@@ -182,7 +178,7 @@ public class GranularSynth : MonoBehaviour
             if(grainList.Count<maxGrains){
                 // Add grain to the list
                 //debugText = ((int)elapsedTime * samplesPerSecond).ToString();
-                grainList.Add(new GranularNote(samplePosition, fadeIn, fadeOut, grainSize, samples, (int)elapsedTime * samplesPerSecond, grainList)); 
+                grainList.Add(new GranularNote(samplePosition, fade, grainSize, samples, (int)elapsedTime * samplesPerSecond, grainList)); 
                 //UnityEngine.Debug.Log(grainSize);
                 //UnityEngine.Debug.Log(relativePositionRightHand.x);
             }
